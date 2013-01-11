@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+import os
+import sys
+
+try:
+    from beuarg import get_classes
+except ImportError:
+    sys.path.append(os.path.realpath(".."))
+    from beuarg import get_classes
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        print "give me a file path"
+        sys.exit(0)
+    from pprint import pprint
+    pprint(get_classes(open(sys.argv[1]).read()))
