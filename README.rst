@@ -26,7 +26,7 @@ Haven't pushed on pypi yet.
 Usage
 =====
 
-List available models (so called "OpenERP Ojbect"):
+List available models (so called "OpenERP Object"):
 
     beuarg security models_file.py
 
