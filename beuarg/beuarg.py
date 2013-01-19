@@ -30,6 +30,9 @@ class KeyAttributesFinder(ast.NodeVisitor):
         if assign_node.targets[0].id == "_columns":
             self.model[assign_node.targets[0].id] = map(lambda x: x.s, assign_node.value.keys)
 
+    def visit_FunctionDef(self, _):
+        pass
+
 def get_classes(string):
     class_finder = ClassFinder()
     class_finder.visit(ast.parse(string))
