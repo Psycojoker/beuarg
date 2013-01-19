@@ -14,3 +14,11 @@ now to solve this issue so Beuarg might end up only being a parsing lib, I
 don't know it yet.
 
 Code is simple and nearly clean if you want to extend it.
+
+Installation
+============
+
+    git clone git://github.com/Psycojoker/beuarg.git
+    python setup.py install
+
+Haven't pushed on pypi yet.
