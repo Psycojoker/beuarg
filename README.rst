@@ -35,3 +35,8 @@ Generate csv security for models (will output on stdout):
     beuarg security models_file.py model1_name model2_name ...
 
 You can use either the class name of the "_name" of a model.
+
+Licence
+=======
+
+GPLv3+
