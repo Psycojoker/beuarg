@@ -22,3 +22,16 @@ Installation
     python setup.py install
 
 Haven't pushed on pypi yet.
+
+Usage
+=====
+
+List available models (so called "OpenERP Ojbect"):
+
+    beuarg security models_file.py
+
+Generate csv security for models (will output on stdout):
+
+    beuarg security models_file.py model1_name model2_name ...
+
+You can use either the class name of the "_name" of a model.
