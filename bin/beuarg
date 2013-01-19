@@ -2,6 +2,7 @@
 
 import os
 import sys
+import argh
 
 try:
     from beuarg import get_classes
@@ -9,9 +10,51 @@ except ImportError:
     sys.path.append(os.path.realpath(".."))
     from beuarg import get_classes
 
+security_template = """\
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_user_model_%s,access_user_model_%s,model_%s,railfleet.group_railfleet_user,1,0,0,0
+access_manager_model_%s,access_manager_model_%s,model_%s,railfleet.group_railfleet_manager,1,0,0,0
+access_superuser_model_%s,access_superuser_model_%s,model_%s,railfleet.group_railfleet_superuser,1,1,1,1
+"""
+
+def get_model_from_name(models, model_name):
+    if models.get(model_name):
+        return models[model_name]
+
+    for i in models.values():
+        if i.get("_name") == model_name:
+            return i
+
+    for i in models.values():
+        if i.get("_inherit") == model_name:
+            return i
+
+    raise KeyError("Model name '%s' not in %s" % (model_name, models))
+
+def display_available_models(models):
+    for model_name, model_content in models.items():
+        print " * " + model_name + ": " + model_content.get("_name", model_content.get("_inherit", "WARNING: this model doesn't have neither an _inherit nor a _name"))
+
+def security(file_name, *args):
+    models = get_classes(open(file_name).read())
+    if len(args) == 0:
+        print "Give me one at least of those models bellow:"
+        display_available_models(models)
+        return
+
+    for model_name in args:
+        if model_name not in models.keys() and model_name not in map(lambda x: x.get("_name"), models.values()) and model_name not in map(lambda x: x.get("_inherit"), models.values()):
+            print model_name, "not in file ('%s')"
+            print "Here are the available models:"
+            display_available_models(models)
+            sys.exit(1)
+
+    for model_name in args:
+        print security_template % tuple([get_model_from_name(models, model_name)["_name"].replace(".", "_")]*9)
+        print
+
+parser = argh.ArghParser()
+parser.add_commands([security])
+
 if __name__ == '__main__':
-    if len(sys.argv) == 1:
-        print "give me a file path"
-        sys.exit(0)
-    from pprint import pprint
-    pprint(get_classes(open(sys.argv[1]).read()))
+    parser.dispatch()
