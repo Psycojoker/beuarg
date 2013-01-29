@@ -24,10 +24,10 @@ import sys
 import argh
 
 try:
-    from beuarg import get_classes
+    from beuarg import get_classes_from_string
 except ImportError:
     sys.path.append(os.path.realpath(".."))
-    from beuarg import get_classes
+    from beuarg import get_classes_from_string
 
 security_template = """\
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
@@ -55,7 +55,7 @@ def display_available_models(models):
         print " * " + model_name + ": " + model_content.get("_name", model_content.get("_inherit", "WARNING: this model doesn't have neither an _inherit nor a _name"))
 
 def security(file_name, *args):
-    models = get_classes(open(file_name).read())
+    models = get_classes_from_string(open(file_name).read())
     if len(args) == 0:
         print "Give me one at least of those models bellow:"
         display_available_models(models)
